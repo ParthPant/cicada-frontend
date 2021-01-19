@@ -11,9 +11,12 @@ import NotesIcon from '@material-ui/icons/Notes';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
-import {Link} from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import Link from '@material-ui/core/Link'
 
 import {useSelector, useDispatch} from 'react-redux'
+import {useHistory} from 'react-router-dom'
 import axiosInstance from '../../axios'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,6 +39,7 @@ export default function MenuAppBar() {
   const classes = useStyles();
   const auth = useSelector(authSelector);
   const dispatch = useDispatch();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -53,6 +57,8 @@ export default function MenuAppBar() {
                 .then(()=>{
                    localStorage.removeItem('refresh_token');
                    localStorage.removeItem('access_token');
+                   history.push('/');
+                   axiosInstance.defaults.headers['Authorization'] = null;
                    dispatch({type:'auth/logout'});
                 }).catch(e=>console.error(e));
   }
@@ -64,20 +70,22 @@ export default function MenuAppBar() {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title} component={Link} to='/'>
-            Cicada
+          <Typography variant="h6" className={classes.title} >
+            <Link color='inherit' component={RouterLink} to='/'>
+                Cicada
+            </Link>
           </Typography>
           {auth && (
             <div>
-              <IconButton
-                  aria-label="Quizes"
-                  aria-controls="menu-appbar"
-                  color="inherit"
-                  component = {Link}
-                  to = '/list'
-              >
-                  <NotesIcon />
-              </IconButton>
+              <Link component={RouterLink} color='inherit' to='/list'>
+                  <IconButton
+                      aria-label="Quizes"
+                      aria-controls="menu-appbar"
+                      color="inherit"
+                  >
+                        <NotesIcon />
+                  </IconButton>
+              </Link>
               <IconButton
                   aria-label="Leaderboard"
                   aria-controls="menu-appbar"
@@ -114,10 +122,16 @@ export default function MenuAppBar() {
               </Menu>
             </div>
           )}
+
         {!auth && (
-            <Button component={Link} to={'/login'} variant="contained" color="secondary" aria-labe="Login">
-                    Login
-            </Button>
+            <ButtonGroup color='secondary'>
+                <Button component={RouterLink} to={'/login'} variant="contained" color="secondary" aria-label="Login">
+                        Login
+                </Button>
+                <Button component={RouterLink} to={'/signup'} variant="outlined" color="secondary" aria-label="SignUp">
+                        SignUp 
+                </Button>
+            </ButtonGroup>
         )}
         </Toolbar>
       </AppBar>

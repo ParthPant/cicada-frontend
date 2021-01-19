@@ -10,6 +10,8 @@ import {Provider} from 'react-redux'
 import MenuAppBar from './navbar/Navbar'
 import SignIn from './signin/SignIn'
 import QuizList from './quizlist/QuizList'
+import SignUp from './signup/SignUp'
+import Leaderboard from './leaderboard/Leaderboard'
 
 import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -34,6 +36,12 @@ export const App = () => {
                     </Route>
                     <Route path="/list">
                         <QuizList/>
+                    </Route>
+                    <Route path="/signup">
+                        <SignUp/>
+                    </Route>
+                    <Route path="/:id/leaderboard">
+                        <Leaderboard/>
                     </Route>
                 </Switch>
 

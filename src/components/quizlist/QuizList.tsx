@@ -6,6 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import {Link as RouterLink} from 'react-router-dom';
 
 import {useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
@@ -37,10 +39,7 @@ export default function QuizList() {
         })
         .catch(e=>{})
         return () => {mounted = false};
-  }, []);
-
-  const handleLeaderboard = ()=>{
-  }
+  },[]);
 
   return (
     <>
@@ -60,8 +59,8 @@ export default function QuizList() {
                         </Typography>
                       </CardContent>
                       <CardActions>
-                        <Button size="small">Details</Button>
-                        <Button size="small" onClick={handleLeaderboard}>Leaderboard</Button>
+                        <Button size="small">Give Quiz</Button>
+                          <Button size="small" component={RouterLink} to={`/${quiz.id}/leaderboard`}>Leaderboard</Button>
                       </CardActions>
                     </Card>
                 </Grid>
